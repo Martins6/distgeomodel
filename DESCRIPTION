@@ -19,7 +19,8 @@ Imports:
     stringr,
     sp,
     geodist,
-    broom
+    broom,
+    magrittr
 License: use_gpl3_license()
 Encoding: UTF-8
 LazyData: true

@@ -17,7 +17,6 @@ vectorizing_fun <- function(a){
 
 
 #' @export
-#' @rawNamespace
 variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$data,
           uvec = "default", breaks = "default", trend = "cte", lambda = 1,
           option = c("bin", "cloud", "smooth"), estimator.type = c("classical",
