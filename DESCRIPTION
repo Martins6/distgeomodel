@@ -13,14 +13,15 @@ Authors@R: c(
            )
 Description: Kriging models using a distance-matrix of choice. The package have function of their own, but also is heavly base on gstat and geoR.
 Imports: 
-    geoR,
-    gstat,
     dplyr,
     stringr,
     sp,
     geodist,
     broom,
     magrittr
+Depends:
+    geoR,
+    gstat
 License: use_gpl3_license()
 Encoding: UTF-8
 LazyData: true

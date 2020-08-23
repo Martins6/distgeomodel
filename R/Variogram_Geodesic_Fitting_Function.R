@@ -29,7 +29,7 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
   if(uvec == 'default'){
 
     aux.bin <- geodata$coords %>%
-      geodist() %>%
+      geodist::geodist() %>%
       vectorizing_fun()
 
     if(missing(max.dist)){max.dist <- max(aux.bin)}
