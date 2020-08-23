@@ -1,0 +1,25 @@
+{
+    "id": "71CC6F21",
+    "path": "~/Documents/distgeomodel/R/auto_krige_model_CV_haversine.R",
+    "project_path": "R/auto_krige_model_CV_haversine.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1598138508367.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "12,10",
+        "scrollLine": "4"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1598144599,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1598144599713,
+    "read_only": false,
+    "read_only_alternatives": []
+}

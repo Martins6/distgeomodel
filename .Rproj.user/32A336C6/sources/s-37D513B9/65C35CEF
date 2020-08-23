@@ -1,0 +1,24 @@
+{
+    "id": "65C35CEF",
+    "path": "~/Documents/distgeomodel/R/auto_fit_variogram_haversine.R",
+    "project_path": "R/auto_fit_variogram_haversine.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1598135868031.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "cursorPosition": "51,0",
+        "scrollLine": "53"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1598144585,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1598144585317,
+    "read_only": false,
+    "read_only_alternatives": []
+}

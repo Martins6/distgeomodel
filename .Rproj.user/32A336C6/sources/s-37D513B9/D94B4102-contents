@@ -1,0 +1,27 @@
+Package: distgeomodel
+Title: Kriging with Non-Euclidean Distances
+Version: 0.0.0.9000
+Authors@R: c(
+    person(given = "Adriel",
+           family = "Martins",
+           role = c("aut", "cre"),
+           email = "am.adriel.martins@gmail.com"),
+    person(given = "Fernanda",
+           family = "de Bastiani",
+           role = "rth",
+           email = "fernanda.bastiani@ufpe.br")
+           )
+Description: Kriging models using a distance-matrix of choice. The package have function of their own, but also is heavly base on gstat and geoR.
+Imports: 
+    geoR,
+    gstat,
+    dplyr,
+    stringr,
+    sp,
+    geodist,
+    broom
+License: use_gpl3_license()
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
