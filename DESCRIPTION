@@ -16,12 +16,12 @@ Imports:
     dplyr,
     stringr,
     sp,
-    geodist,
     broom,
     magrittr
 Depends:
     geoR,
-    gstat
+    gstat,
+    geodist
 License: use_gpl3_license()
 Encoding: UTF-8
 LazyData: true

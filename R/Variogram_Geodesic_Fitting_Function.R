@@ -2,29 +2,27 @@
 # Author: Adriel Martins
 # Date: 15/04/2020
 
-requireNamespace('geoR', quietly = TRUE)
-
-# This functions helps to vectorize the matrix of geodesic distances
-vectorizing_fun <- function(a){
-
-  # 'a' is a matrix
-
-  a[!lower.tri(a)] <- NA # Filling the upper part of the triangle with NA's
-  a <- as.vector(a) # Making the matrix a vector
-  a <- a[!is.na(a)] # Taking out the NA's
-  return(a) # returning only the lower triangle part of the matrix
-}
-
-
 #' @export
 variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$data,
           uvec = "default", breaks = "default", trend = "cte", lambda = 1,
           option = c("bin", "cloud", "smooth"), estimator.type = c("classical",
-                                                                   "modulus"), nugget.tolerance, max.dist, pairs.min = 2,
+                                                                   "modulus"),
+          nugget.tolerance, max.dist, pairs.min = 2,
           bin.cloud = FALSE, direction = "omnidirectional", tolerance = pi/8,
           unit.angle = c("radians", "degrees"), angles = FALSE, messages,
           ...)
 {
+
+  # This functions helps to vectorize the matrix of geodesic distances
+  vectorizing_fun <- function(a){
+
+    # 'a' is a matrix
+
+    a[!lower.tri(a)] <- NA # Filling the upper part of the triangle with NA's
+    a <- as.vector(a) # Making the matrix a vector
+    a <- a[!is.na(a)] # Taking out the NA's
+    return(a) # returning only the lower triangle part of the matrix
+  }
 
   if(uvec == 'default'){
 
