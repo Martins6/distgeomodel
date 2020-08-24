@@ -154,14 +154,14 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
 
   plot_variog_fit <- ggplot2::ggplot() +
     # Variogram points
-    ggplot2::geom_point(aes(x = dist, y = gamma), a) +
+    ggplot2::geom_point(ggplot2::aes(x = dist, y = gamma), a) +
     # Labels for each of the variogram points indicating how much points there are on each distance class
-    ggplot2::geom_text(aes(x = dist, y = gamma, label = n),
+    ggplot2::geom_text(ggplot2::aes(x = dist, y = gamma, label = n),
               data = a, nudge_x = 10000) +
     # Autocorrelation function
-    ggplot2::geom_path(aes(x = dist, y = gamma), b) +
+    ggplot2::geom_path(ggplot2::aes(x = dist, y = gamma), b) +
     # Best model annotation
-    ggplot2::geom_text(aes(x = a$dist[length(a$dist)], y = a$gamma[1]),
+    ggplot2::geom_text(ggplot2::aes(x = a$dist[length(a$dist)], y = a$gamma[1]),
               label = paste('MSQR:', round(best_model[1,2], 3))) +
     ggplot2::labs(x = 'Distância',
          y = 'Semivariância',
