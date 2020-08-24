@@ -44,7 +44,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
       dist(method = 'euclidean') %>%
       vectorizing_fun()
 
-    if(missing(max_dist)){max.dist <- max(aux_bin)}
+    if(missing(max_dist)){max_dist <- max(aux_bin)}
 
     aux_bin1 <- aux_bin[aux_bin < max_dist] %>%
       quantile(probs = seq(0,1, l = 12))
@@ -127,7 +127,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
 
   # Changing from GeoR to GSTAT form
   # Adapting the name of the model so that it can fit in the gstat form
-  model_gstat <- as.character(best.model[1,1]) %>%
+  model_gstat <- as.character(best_model[1,1]) %>%
     stringr::str_sub(1L, 3L) %>%
     stringr::str_to_title()
 
@@ -161,13 +161,13 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
     ggplot2::geom_path(aes(x = dist, y = gamma), b) +
     # Best model annotation
     ggplot2::geom_text(aes(x = a$dist[length(a$dist)], y = a$gamma[1]),
-              label = paste('MSQR:', round(best.model[1,2], 3))) +
+              label = paste('MSQR:', round(best_model[1,2], 3))) +
     ggplot2::labs(x = 'Distância',
          y = 'Semivariância',
          title = title.plot,
-         subtitle = paste('Família:', str_to_title(best.model[1,1]),
+         subtitle = paste('Família:', stringr::str_to_title(best_model[1,1]),
                           ' ',
-                          'Peso:', str_to_title(best.model[1,3]))) +
+                          'Peso:', stringr::str_to_title(best_model[1,3]))) +
     ggplot2::theme_bw()
 
   res <- res %>%

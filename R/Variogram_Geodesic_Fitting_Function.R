@@ -13,17 +13,6 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
           ...)
 {
 
-  # This functions helps to vectorize the matrix of geodesic distances
-  vectorizing_fun <- function(a){
-
-    # 'a' is a matrix
-
-    a[!lower.tri(a)] <- NA # Filling the upper part of the triangle with NA's
-    a <- as.vector(a) # Making the matrix a vector
-    a <- a[!is.na(a)] # Taking out the NA's
-    return(a) # returning only the lower triangle part of the matrix
-  }
-
   if(uvec == 'default'){
 
     aux.bin <- geodata$coords %>%
