@@ -2,9 +2,6 @@
 # Author: Adriel Martins
 # Date: 02/03/2020
 
-
-
-
 #' Fitting multiple variogram models using haversine distance (default) or euclidean.
 #'
 #' @param df A dataframe that has 'value' and two coordinates columns 'lat', 'long' for haversine or 'x' and 'y' for euclidean.
