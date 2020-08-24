@@ -3,5 +3,4 @@
 export(auto_fit_variogram_haversine)
 export(auto_krige_model_CV_haversine)
 export(variog_geodesic)
-export(vectorizing_fun)
 importFrom(magrittr,"%>%")
