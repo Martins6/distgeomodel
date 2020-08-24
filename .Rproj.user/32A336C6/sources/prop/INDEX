@@ -16,6 +16,8 @@
 ~%2FDocuments%2Fdistgeomodel%2FR%2Fautofit_variogram_haversine.R="B754B45C"
 ~%2FDocuments%2Fdistgeomodel%2FR%2Fcross_validation_krige.R="FAA64962"
 ~%2FDocuments%2Fdistgeomodel%2FR%2Fhelper.R="F3284182"
+~%2FDocuments%2Fdistgeomodel%2FR%2Futils.R="3D58298C"
 ~%2FDocuments%2Fdistgeomodel%2Fman%2Fauto_krige_model_CV_haversine.Rd="1B1092CD"
 ~%2FDocuments%2Fdistgeomodel%2Fman%2Fautofit_variogram_haversine.Rd="F08C0FEB"
 ~%2FDocuments%2Fdistgeomodel%2Frenv.lock="FD452EE0"
+~%2FDocuments%2Ftest.R="CC773BEC"

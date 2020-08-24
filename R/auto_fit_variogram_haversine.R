@@ -39,7 +39,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
   if(distance == 'euclidean'){
     aux_bin <- df_geo$coords %>%
       dist(method = 'euclidean') %>%
-      distgeomodel::vectorizing_fun()
+      vectorizing_fun()
 
     if(missing(max_dist)){max_dist <- max(aux_bin)}
 
