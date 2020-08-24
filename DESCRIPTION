@@ -1,4 +1,4 @@
-Package: distgeomodel
+Package: distkrige
 Title: Kriging with Non-Euclidean Distances
 Version: 0.0.0.9000
 Authors@R: c(
@@ -11,7 +11,7 @@ Authors@R: c(
            role = "rth",
            email = "fernanda.bastiani@ufpe.br")
            )
-Description: Kriging models using a distance-matrix of choice. The package have function of their own, but also is heavly base on gstat and geoR.
+Description: Kriging models using a distance-matrix of choice. The package have function of their own, but also is heavly based on gstat and geoR.
 Imports: 
     dplyr,
     stringr,

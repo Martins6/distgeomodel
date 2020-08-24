@@ -17,7 +17,7 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
 
     aux.bin <- geodata$coords %>%
       geodist::geodist() %>%
-      distgeomodel::vectorizing_fun()
+      distkrige::vectorizing_fun()
 
     if(missing(max.dist)){max.dist <- max(aux.bin)}
 
@@ -112,7 +112,7 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
     }
   }
   else beta.ols <- colMeans(as.matrix(data))
-  u <- distgeomodel::vectorizing_fun(geodist::geodist(as.matrix(coords), measure = "haversine")) %>% ############################ 1)
+  u <- distkrige::vectorizing_fun(geodist::geodist(as.matrix(coords), measure = "haversine")) %>% ############################ 1)
     na.omit() %>%
     as.numeric()
   if (missing(nugget.tolerance) || nugget.tolerance < 1e-11) {
@@ -184,7 +184,7 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
     data <- as.matrix(data)
     v <- matrix(0, nrow = length(u), ncol = n.datasets)
     for (i in 1:n.datasets) {
-      v[, i] <- distgeomodel::vectorizing_fun(geodist::geodist(data[, i], measure = "haversine")) ################################ 2)
+      v[, i] <- distkrige::vectorizing_fun(geodist::geodist(data[, i], measure = "haversine")) ################################ 2)
       if (estimator.type == "modulus")
         v[, i] <- v[, i, drop = FALSE]^(0.5)
       else v[, i] <- (v[, i, drop = FALSE]^2)/2
