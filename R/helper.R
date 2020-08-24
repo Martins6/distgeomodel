@@ -2,6 +2,7 @@
 #'
 #' @param a A matrix
 #' @return A vectorized matrix, a vector.
+#' @export
 vectorizing_fun <- function(a){
 
   # 'a' is a matrix

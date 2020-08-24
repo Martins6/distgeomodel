@@ -112,12 +112,16 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
       res <- res %>%
         dplyr::add_row(tibble::tibble_row(Model = i, MSSErr = MSSErr), Weights = j, Kappa_Matern = NA)
     }
+
+    print(paste(i, j))
   }
 
   # Finding the model that minimizes the SSE
   best_model <- res %>%
     dplyr::filter(!is.na(Model)) %>%
     dplyr::filter(MSSErr == min(MSSErr))
+
+  print(best_model)
 
   # Fitting the optimal variogram
   ols_fit <- geoR::variofit(v,
@@ -181,7 +185,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
     dplyr::select(-Kappa_Matern)
 
   return(list(plot = plot_variog_fit, variogram = var_fit,
-              best_models = best_model, Results = res))
+              best_model = best_model, Results = res))
 
 }
 
