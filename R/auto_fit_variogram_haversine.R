@@ -165,7 +165,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
               label = paste('MSQR:', round(best_model[1,2], 3))) +
     ggplot2::labs(x = 'Distância',
          y = 'Semivariância',
-         title = title.plot,
+         title = title_plot,
          subtitle = paste('Família:', stringr::str_to_title(best_model[1,1]),
                           ' ',
                           'Peso:', stringr::str_to_title(best_model[1,3]))) +
@@ -176,7 +176,7 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
     dplyr::filter(!is.na(Model)) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(Model = if_else(!is.na(Kappa_Matern),
-                           str_c(Model, ' (Phi = ', as.character(Kappa_Matern), ')'),
+                           stringr::str_c(Model, ' (Phi = ', as.character(Kappa_Matern), ')'),
                            Model)) %>%
     dplyr::ungroup() %>%
     dplyr::select(-Kappa_Matern)
