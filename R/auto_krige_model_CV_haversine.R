@@ -6,19 +6,19 @@
 #'
 #' @param df A dataframe that has 'value' and two coordinates columns 'lat', 'long' for haversine or 'x' and 'y' for euclidean.
 #' @param distance Type of distance to be choosen.
+#' @param max_dist Maximum distance to be considered in the fitting of variogram models.
 #' @param model_classes Classes of variogram models to be considered.
 #' @param weight_types Weights considered in the fitting of the variogram models.
 #' @param best_model_criteria The criteria to be taken for the choosing of the best model.
 #' @return A list containing all the results of the combinations of the model and a gstat object of the best model.
 #' @export
-auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
-                                                  best_model_criteria = 'MSE', max.dist,
-                                                  model_classes = c("matern", "exponential", "gaussian", "spherical"),
-                                                  weights_types = c("npairs", "cressie", "equal")){
-
-  dt <- df
-  model.classes <- model_classes
-  weight.types <-  weights_types
+auto_krige_model_CV_haversine <-
+  function(df,
+           distance = 'haversine',
+           best_model_criteria = 'MSE',
+           max_dist,
+           model_classes = c("matern", "exponential", "gaussian", "spherical"),
+           weights_types = c("npairs", "cressie", "equal")) {
 
   # If distance = 'haversine',
   # dt must have 'lat' and 'long' columns, with only other column, named 'value'.
@@ -26,16 +26,16 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
   # dt must have 'x' and 'y' columns, with only other column, named 'value'.
 
   # Transforming to geodata
-  df_geo <- df %>% geor::as.geodata()
+  df_geo <- df %>% geoR::as.geodata()
 
   # Modelling Variogram with the SSE minimization
   if(distance == 'haversine'){
 
     if (missing(max_dist)) {
       # Variogram with Geodesic Distance
-      v <- variog.geodesic(df_geo)
+      v <- variog_non_euclidean(df_geo)
     } else{
-      v <- variog.geodesic(df_geo, max.dist = max_dist)
+      v <- variog_non_euclidean(df_geo, max.dist = max_dist)
     }
 
   }
@@ -85,10 +85,10 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
           MSSErr <- mean(diff_cov^2)
 
           if(distance == 'haversine'){
-            cv <- cv_geodesic(df, var_fit)
+            cv <- cv_krige_haversine(df, var_fit)
           }
           if(distance == 'euclidean'){
-            cv <- cv_geodesic(df, var_fit, distance = 'euclidean')
+            cv <- cv_krige_haversine(df, var_fit, distance = 'euclidean')
           }
 
           # MAE and MSE
@@ -97,7 +97,7 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
                       MSE = mean(z.score^2))
           # Add the parameters to our auxiliary tibble
           res <- res %>%
-            tibble::add_row(tibble_row(Vario.Model = i, Vario.MSSErr = MSSErr), Vario.Weights = j,
+            tibble::add_row(tibble::tibble_row(Vario.Model = i, Vario.MSSErr = MSSErr), Vario.Weights = j,
                     Krige.CV.MSE = aux$MSE, Krige.CV.MAE = aux$MAE, Kappa_Matern = kap)
 
         }
@@ -115,11 +115,11 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
         warning(paste('Numeric Error in fitting of the following model:', i, j))
         next
       }
-      var_fit <- gstat::vgm(psill = ols.fit$cov.pars[1],
-                     model = model.gstat,
-                     range = ols.fit$cov.pars[2],
-                     nugget = ols.fit$nugget,
-                     cutoff = ols.fit$max.dist)
+      var_fit <- gstat::vgm(psill = ols_fit$cov.pars[1],
+                     model = model_gstat,
+                     range = ols_fit$cov.pars[2],
+                     nugget = ols_fit$nugget,
+                     cutoff = ols_fit$max.dist)
 
       # Calculating the diference
       fit_cov <- gstat::variogramLine(var_fit, max(v$u), dist_vector = v$u)$gamma
@@ -127,10 +127,10 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
       MSSErr <- mean(diff_cov^2)
 
       if(distance == 'haversine'){
-        cv <- cv_geodesic(df, var_fit)
+        cv <- cv_krige_haversine(df, var_fit)
       }
       if(distance == 'euclidean'){
-        cv <- cv_geodesic(df, var_fit, distance = 'euclidean')
+        cv <- cv_krige_haversine(df, var_fit, distance = 'euclidean')
       }
 
       # MAE and MSE
@@ -139,26 +139,26 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
                   MSE = mean(z.score^2))
       # Add the parameters to our auxiliary tibble
       res <- res %>%
-        tibble::add_row(tibble_row(Vario.Model = i, Vario.MSSErr = MSSErr), Vario.Weights = j,
+        tibble::add_row(tibble::tibble_row(Vario.Model = i, Vario.MSSErr = MSSErr), Vario.Weights = j,
                 Krige.CV.MSE = aux$MSE, Krige.CV.MAE = aux$MAE, Kappa_Matern = NA)
     }
   }
 
   # Finding the model that minimizes the best_model_criteria
   column <- stringr::str_c(c('Krige.CV.', best_model_criteria), collapse = '')
-  best.model <- res %>%
+  best_model <- res %>%
     dplyr::filter(!is.na(Vario.Model)) %>%
     dplyr::filter(.data[[column]] == min(.data[[column]]))
 
   # Fitting the optimal variogram
   ols_fit <- geoR::variofit(v,
-                      cov.model = as.character(best.model[1,1]),
-                      weights = as.character(best.model[1,3]),
+                      cov.model = as.character(best_model[1,1]),
+                      weights = as.character(best_model[1,3]),
                       messages = F)
 
   # Changing from GeoR to GSTAT form
   # Adapting the name of the model so that it can fit in the gstat form
-  model_gstat <- as.character(best.model[1,1]) %>%
+  model_gstat <- as.character(best_model[1,1]) %>%
     stringr::str_sub(1L, 3L) %>%
     stringr::str_to_title()
 
@@ -178,5 +178,5 @@ auto_krige_model_CV_haversine <- function(df, distance = 'haversine',
     dplyr::ungroup() %>%
     dplyr::select(-Kappa_Matern)
 
-  return(list(Results = res, var.fit.best.model = var_fit))
+  return(list(Results = res, var_fit_best_model = var_fit))
 }

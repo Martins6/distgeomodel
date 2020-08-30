@@ -2,8 +2,10 @@
 # Author: Adriel Martins
 # Date: 15/04/2020
 
+#' Modified function from the geoR package to calculate the sample variogram with any distance-matrix.
+#'
 #' @export
-variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$data,
+variog_non_euclidean <- function (geodata, coords = geodata$coords, data = geodata$data,
           uvec = "default", breaks = "default", trend = "cte", lambda = 1,
           option = c("bin", "cloud", "smooth"), estimator.type = c("classical",
                                                                    "modulus"),
@@ -298,7 +300,7 @@ variog_geodesic <- function (geodata, coords = geodata$coords, data = geodata$da
 
 # It must be of the same environment of the geoR to use
 # all of the other function of the package.
-environment(variog_geodesic) <- asNamespace('geoR')
+environment(variog_non_euclidean) <- asNamespace('geoR')
 
 
 

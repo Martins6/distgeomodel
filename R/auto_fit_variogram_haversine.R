@@ -7,9 +7,15 @@
 #' @param df A dataframe that has 'value' and two coordinates columns 'lat', 'long' for haversine or 'x' and 'y' for euclidean.
 #' @param distance Type of distance to be choosen.
 #' @param max_dist Maximum distance to be considered in the fitting of variogram models.
+#' @param model_classes Classes of variogram models to be considered.
+#' @param weight_types Weights considered in the fitting of the variogram models.
 #' @return A list containing first the plot, caracteristic and gstat object of the best model; also all the results of the other models.
 #' @export
-auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
+auto_fit_variogram_haversine <- function(df,
+                                         distance = 'haversine',
+                                         max_dist,
+                                         model_classes = c("matern", "exponential", "gaussian", "spherical"),
+                                         weights_types = c("npairs", "cressie", "equal")){
 
   # If distance = 'haversine',
   # dt must have 'lat' and 'long' columns, with only other column, named 'value'.
@@ -21,18 +27,14 @@ auto_fit_variogram_haversine <- function(df, distance = 'haversine', max_dist){
     geoR::as.geodata()
 
   # Modelling Variogram with the SSE minimization
-  # All the model classes
-  model_classes <- c("matern", "exponential", "gaussian", "spherical")
-  # All the Weight Types
-  weights_types <- c("npairs", "cressie", "equal")
 
   if(distance == 'haversine'){
 
     if (missing(max_dist)) {
       # Variogram with Geodesic Distance
-      v <- variog_geodesic(df_geo)
+      v <- variog_non_euclidean(df_geo)
     } else{
-      v <- variog_geodesic(df_geo, max.dist = max_dist)
+      v <- variog_non_euclidean(df_geo, max.dist = max_dist)
     }
 
   }

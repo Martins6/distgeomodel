@@ -4,7 +4,13 @@
 \alias{auto_fit_variogram_haversine}
 \title{Fitting multiple variogram models using haversine distance (default) or euclidean.}
 \usage{
-auto_fit_variogram_haversine(df, distance = "haversine", max_dist)
+auto_fit_variogram_haversine(
+  df,
+  distance = "haversine",
+  max_dist,
+  model_classes = c("matern", "exponential", "gaussian", "spherical"),
+  weights_types = c("npairs", "cressie", "equal")
+)
 }
 \arguments{
 \item{df}{A dataframe that has 'value' and two coordinates columns 'lat', 'long' for haversine or 'x' and 'y' for euclidean.}
@@ -12,6 +18,10 @@ auto_fit_variogram_haversine(df, distance = "haversine", max_dist)
 \item{distance}{Type of distance to be choosen.}
 
 \item{max_dist}{Maximum distance to be considered in the fitting of variogram models.}
+
+\item{model_classes}{Classes of variogram models to be considered.}
+
+\item{weight_types}{Weights considered in the fitting of the variogram models.}
 }
 \value{
 A list containing first the plot, caracteristic and gstat object of the best model; also all the results of the other models.

@@ -2,9 +2,15 @@
 # Author: Adriel Martins
 # Date: 02/03/2020
 ################****************************
-# THIS CODE IS DEPENDENT ON THE 'kriging.R'.
 
-cv_krige <- function(dt, varg, distance = 'haversine'){
+#' 'Leave-one-out' Cross-Validation method to measure model performance.
+#'
+#' @param df A dataframe that has 'value' and two coordinates columns 'lat', 'long' for haversine or 'x' and 'y' for euclidean.
+#' @param distance Type of distance to be choosen.
+#' @param varg A variogram object from the gstat library.
+#' @return A tibble containing data from the Cross-Validation.
+#' @export
+cv_krige_haversine <- function(df, varg, distance = 'haversine'){
   # *********************************************************************
   # 'dt' is a Data Frame object;
   # based on the distance we will have different requirements for the dt:
@@ -15,10 +21,10 @@ cv_krige <- function(dt, varg, distance = 'haversine'){
   # accoording to the distance
   # *********************************************************************
 
-  aux <- tibble(cv.pred.krige = rep(NA_real_, nrow(dt)),
-                cv.var.pred.krige = rep(NA_real_, nrow(dt)),
-                cv.resid = rep(NA_real_, nrow(dt)),
-                z.score = rep(NA_real_, nrow(dt))
+  aux <- tibble::tibble(cv.pred.krige = rep(NA_real_, nrow(df)),
+                cv.var.pred.krige = rep(NA_real_, nrow(df)),
+                cv.resid = rep(NA_real_, nrow(df)),
+                z.score = rep(NA_real_, nrow(df))
                 )
 
   if(distance == 'haversine'){
@@ -33,11 +39,11 @@ cv_krige <- function(dt, varg, distance = 'haversine'){
     coord.y <- 'y'
   }
 
-  for(i in 1:nrow(dt)){
+  for(i in 1:nrow(df)){
     # Train dataset
-    train <- dt[-i,]
+    train <- df[-i,]
     # Test point coordinates
-    test <- dt[i,]
+    test <- df[i,]
     # Kriging the train dataset on the test point
     cv.fit.krige <- ordinary_kriging(train, varg, distance = dista,
                                   df.coord = test[c(coord.x, coord.y)])
@@ -48,7 +54,7 @@ cv_krige <- function(dt, varg, distance = 'haversine'){
     cv.resid <- test$value - cv.pred.krige
     z.score <- cv.resid/cv.sd.pred.krige
 
-    aux[i,] <- tibble_row(cv.pred.krige,
+    aux[i,] <- tibble::tibble_row(cv.pred.krige,
                  cv.var.pred.krige,
                  cv.resid,
                  z.score)
@@ -57,15 +63,15 @@ cv_krige <- function(dt, varg, distance = 'haversine'){
   if(distance == 'haversine'){
     # Putting coordinates on each of our values
     aux <- aux %>%
-      mutate(lat = dt$lat,
-             long = dt$long)
+      dplyr::mutate(lat = df$lat,
+             long = df$long)
 
   }
   if(distance == 'haversine'){
     # Putting coordinates on each of our values
     aux <- aux %>%
-      mutate(x = dt$x,
-             y = dt$y)
+      dplyr::mutate(x = df$x,
+             y = df$y)
   }
 
   return(aux)

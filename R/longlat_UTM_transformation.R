@@ -9,7 +9,7 @@
 # library(stringr)
 
 # Function
-LongLatToUTM <- function(long = -20.902735,lat = -6.050278, sp_dt = 1, zone = 25){
+LongLatToUTM <- function(long = -20.902735, lat = -6.050278, sp_dt = 1, zone = 25){
 
   # If we want to change a already SpatialDataFrame!
   if(typeof(sp_dt) != 'double'){
@@ -58,7 +58,6 @@ UTM_To_LongLat <- function(Eastings, Northings, zone){
 
 
 ################################## Rijksdriehoek to LongLat ###########################
-
 rd_to_wgs84 <- function(x, y) {
   if (!is.numeric(x)) stop("x needs to be numeric.")
   if (nargs() == 1  && length(x) == 2) {

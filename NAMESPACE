@@ -2,6 +2,8 @@
 
 export(auto_fit_variogram_haversine)
 export(auto_krige_model_CV_haversine)
-export(variog_geodesic)
+export(cv_krige_haversine)
+export(ordinary_kriging)
+export(variog_non_euclidean)
 export(vectorizing_fun)
 importFrom(magrittr,"%>%")
