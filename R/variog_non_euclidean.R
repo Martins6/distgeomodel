@@ -5,14 +5,29 @@
 #' Modified function from the geoR package to calculate the sample variogram with any distance-matrix.
 #'
 #' @export
-variog_non_euclidean <- function (geodata, coords = geodata$coords, data = geodata$data,
-          uvec = "default", breaks = "default", trend = "cte", lambda = 1,
-          option = c("bin", "cloud", "smooth"), estimator.type = c("classical",
-                                                                   "modulus"),
-          nugget.tolerance, max.dist, pairs.min = 2,
-          bin.cloud = FALSE, direction = "omnidirectional", tolerance = pi/8,
-          unit.angle = c("radians", "degrees"), angles = FALSE, messages,
-          ...)
+variog_non_euclidean <-
+  function (geodata,
+            coords = geodata$coords,
+            data = geodata$data,
+            dist_matrix = NA,
+            uvec = "default",
+            breaks = "default",
+            trend = "cte",
+            lambda = 1,
+            option = c("bin", "cloud", "smooth"),
+            estimator.type = c("classical",
+                               "modulus"),
+            nugget.tolerance,
+            max.dist,
+            pairs.min = 2,
+            bin.cloud = FALSE,
+            direction = "omnidirectional",
+            tolerance = pi / 8,
+            unit.angle = c("radians", "degrees"),
+            angles = FALSE,
+            messages,
+            ...
+  )
 {
 
   if(uvec == 'default'){
