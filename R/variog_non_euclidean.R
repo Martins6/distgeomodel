@@ -10,6 +10,7 @@ variog_non_euclidean <-
             coords = geodata$coords,
             data = geodata$data,
             dist_matrix = NA,
+            distance = NA,
             uvec = "default",
             breaks = "default",
             trend = "cte",
@@ -30,11 +31,25 @@ variog_non_euclidean <-
   )
 {
 
+  ############################################################## FIRST CHANGE TO THE ORIGINAL FUNCTION
   if(uvec == 'default'){
 
-    aux.bin <- geodata$coords %>%
-      geodist::geodist() %>%
-      distkrige::vectorizing_fun()
+    # If there is a 'dist_matrix', use it, otherwise use the 'distance' parameter.
+    # If there is none. Error!
+    if(!is.na(dist_matrix)){
+      aux.bin <-
+        dist_matrix %>%
+        distkrige::vectorizing_fun()
+    }else{
+      if(distance == 'haversine'){
+        aux.bin <-
+          geodata$coords %>%
+          geodist::geodist() %>%
+          distkrige::vectorizing_fun()
+      }else{
+        errorCondition('Missing "dist_matrix" or "distance" parameter.')
+      }
+    }
 
     if(missing(max.dist)){max.dist <- max(aux.bin)}
 
@@ -43,7 +58,6 @@ variog_non_euclidean <-
 
     uvec <- aux.bin1/10^5
     }
-
 
   if (missing(geodata))
     geodata <- list(coords = coords, data = data)
@@ -129,9 +143,28 @@ variog_non_euclidean <-
     }
   }
   else beta.ols <- colMeans(as.matrix(data))
-  u <- distkrige::vectorizing_fun(geodist::geodist(as.matrix(coords), measure = "haversine")) %>% ############################ 1)
-    na.omit() %>%
-    as.numeric()
+  ############################################################### SECOND CHANGE TO THE ORIGINAL FUNCTION
+  # If there is a 'dist_matrix', use it, otherwise use the 'distance' parameter.
+  # If there is none. Error!
+  if(!is.na(dist_matrix)){
+    u <-
+      dist_matrix %>%
+      distkrige::vectorizing_fun() %>%
+      na.omit() %>%
+      as.numeric()
+  }else{
+    if(distance == 'haversine'){
+      u <-
+        distkrige::vectorizing_fun(
+          geodist::geodist(
+            as.matrix(coords),
+            measure = "haversine")
+        ) %>%
+        na.omit() %>%
+        as.numeric()
+    }
+  }
+
   if (missing(nugget.tolerance) || nugget.tolerance < 1e-11) {
     nugget.tolerance <- 1e-12
     nt.ind <- FALSE
@@ -201,7 +234,7 @@ variog_non_euclidean <-
     data <- as.matrix(data)
     v <- matrix(0, nrow = length(u), ncol = n.datasets)
     for (i in 1:n.datasets) {
-      v[, i] <- distkrige::vectorizing_fun(geodist::geodist(data[, i], measure = "haversine")) ################################ 2)
+      v[, i] <- as.vector(dist(data[, i]))
       if (estimator.type == "modulus")
         v[, i] <- v[, i, drop = FALSE]^(0.5)
       else v[, i] <- (v[, i, drop = FALSE]^2)/2
